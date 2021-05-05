@@ -10,24 +10,22 @@ public class GUIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textLoading;
     [SerializeField] private GameObject popupGameWin, popupGameOver;
 
-    private void OnEnable() {
+    private void Start() {
         EventManager.Instance.GameReady += OnGameReady;
         EventManager.Instance.GameWon += OnGameWon;
         EventManager.Instance.GameOver += OnGameOver;
     }
 
-    private void OnDisable() {
+    private void OnDestroy() {
         EventManager.Instance.GameReady -= OnGameReady;
         EventManager.Instance.GameWon -= OnGameWon;
         EventManager.Instance.GameOver -= OnGameOver;
     }
 
-    private void Awake()
-    {
-    }
-
     private void OnGameReady() {
-        StartCoroutine(LoadingScreenFadeOutCo());
+        if (imageLoading) {
+            StartCoroutine(LoadingScreenFadeOutCo());
+        }
     }
 
     private IEnumerator LoadingScreenFadeOutCo() {
@@ -42,7 +40,6 @@ public class GUIManager : MonoBehaviour
             var textLoadingColor = textLoading.color;
             textLoadingColor.a -= fadeOutDuration * 4f * Time.deltaTime;
             textLoading.color = textLoadingColor;
-
             yield return null;
         }
 

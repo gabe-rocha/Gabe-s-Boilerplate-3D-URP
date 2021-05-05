@@ -1,7 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.Events;
-using System.Collections.Generic;
 
 public class EventManager : MonoBehaviour {
 
@@ -11,6 +9,7 @@ public class EventManager : MonoBehaviour {
     public Action GameWon;
     public Action GameOver;
 
+    //public EventHandler<Vector3> MouseDragging;
     public Action<Vector3> MouseDragging;
     public Action<Vector3> MouseButtonUp;
     public Action<Vector3> MouseButtonDown;

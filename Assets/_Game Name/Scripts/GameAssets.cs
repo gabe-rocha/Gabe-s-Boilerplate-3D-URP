@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameAssets : MonoBehaviour {
 
@@ -25,4 +26,8 @@ public class GameAssets : MonoBehaviour {
         public SoundManager.Music music;
         public AudioClip audioClip;
     }
+
+    public Sprite imageButtonVibrationOn, imageButtonVibrationOff;
+    public Sprite imageButtonSoundEffectsOn, imageButtonSoundEffectsOff;
+    public Sprite imageButtonMusicOn, imageButtonMusicOff;
 }

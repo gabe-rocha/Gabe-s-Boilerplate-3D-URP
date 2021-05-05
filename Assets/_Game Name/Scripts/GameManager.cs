@@ -17,16 +17,6 @@ public class GameManager : MonoBehaviour
     private GameObject _levelPrefab;
     public static GameManager Instance;
 
-    private void OnEnable() {
-        EventManager.Instance.GameWon += OnGameWon;
-        EventManager.Instance.GameOver += OnGameOver;
-    }
-
-    private void OnDisable() {
-        EventManager.Instance.GameWon -= OnGameWon;
-        EventManager.Instance.GameOver -= OnGameOver;
-    }
-
     void Awake()
     {
         Instance = this;
@@ -36,6 +26,21 @@ public class GameManager : MonoBehaviour
         GameData.LoadPlayerPrefs();
 
         Application.targetFrameRate = 90;
+    }
+
+    private void Start() {
+        EventManager.Instance.GameWon += OnGameWon;
+        EventManager.Instance.GameOver += OnGameOver;
+        EventManager.Instance.MouseDragging += OnMouseDrag;
+    }
+
+    private void OnMouseDrag(Vector3 e) {
+        Debug.Log("Mouse Dragging: " + e.ToString());
+    }
+
+    private void OnDestroy() {
+        EventManager.Instance.GameWon -= OnGameWon;
+        EventManager.Instance.GameOver -= OnGameOver;
     }
 
     private void Update()
@@ -60,7 +65,7 @@ public class GameManager : MonoBehaviour
                 //Instantiate Level
 
                 //Level Loaded, inform everybody
-                EventManager.Instance.GameReady();
+                EventManager.Instance.GameReady?.Invoke();
                 SoundManager.PlayBGM(SoundManager.Music.BGMFunGameplay01);
 
                 GameData.SetGameState(GameData.GameStates.MainMenu);
@@ -89,7 +94,7 @@ public class GameManager : MonoBehaviour
         SoundManager.PlaySoundOneShot(SoundManager.Sound.GameStarted);
 
         GameData.SetGameState(GameData.GameStates.Playing);
-        EventManager.Instance.GameStarted();
+        EventManager.Instance.GameStarted?.Invoke();
     }
 
     private void OnGameWon() {
