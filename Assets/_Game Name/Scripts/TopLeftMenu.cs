@@ -1,10 +1,11 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class TopLeftMenu : MonoBehaviour
 {
     private GameObject topLeftVerticalButtons;
-    [SerializeField] private Image imageButtonVibration;
+    [SerializeField] private Image imageButtonVibration, imageButtonSound, imageButtonMusic;
 
     private void Awake() {
         topLeftVerticalButtons = transform.Find("Top Left Vertical Buttons").gameObject;
@@ -12,6 +13,33 @@ public class TopLeftMenu : MonoBehaviour
 
     private void Start() {
         topLeftVerticalButtons.SetActive(false);
+        RefreshSprites();
+    }
+
+    private void RefreshSprites() {
+
+        if (GameData.vibrationEnabled) {
+            imageButtonVibration.sprite = GameAssets.Instance.imageButtonVibrationOn;
+        }
+        else {
+            imageButtonVibration.sprite = GameAssets.Instance.imageButtonVibrationOff;
+        }
+
+        if (GameData.soundEnabled) {
+            imageButtonSound.sprite = GameAssets.Instance.imageButtonSoundEffectsOn;
+        }
+        else {
+            imageButtonSound.sprite = GameAssets.Instance.imageButtonSoundEffectsOff;
+        }
+
+        if (GameData.musicEnabled) {
+            SoundManager.PlayBGM(SoundManager.Music.BGMFunGameplay01);
+            imageButtonMusic.sprite = GameAssets.Instance.imageButtonMusicOn;
+        }
+        else {
+            SoundManager.StopBGM();
+            imageButtonMusic.sprite = GameAssets.Instance.imageButtonMusicOff;
+        }
     }
 
     public void OnButtonSettingsPressed() {
@@ -20,28 +48,20 @@ public class TopLeftMenu : MonoBehaviour
 
     public void OnButtonVibrationPressed() {
         GameData.vibrationEnabled = !GameData.vibrationEnabled;
-
-        if (GameData.vibrationEnabled) {
-            imageButtonVibration.sprite = GameAssets.Instance.imageButtonVibrationOn;
-        }
-        else {
-            imageButtonVibration.sprite = GameAssets.Instance.imageButtonVibrationOff;
-        }
+        GameData.SavePlayerPrefs();
+        RefreshSprites();
     }
 
     public void OnButtonSoundEffectsPressed() {
         GameData.soundEnabled = !GameData.soundEnabled;
-
-        //if (GameData.soundEnabled) {
-        //    imagebutton.sprite = GameAssets.Instance.imageButtonVibrationOn.sprite;
-        //}
-        //else {
-        //    imageButtonVibration.sprite = GameAssets.Instance.imageButtonVibrationOff.sprite;
-        //}
+        GameData.SavePlayerPrefs();
+        RefreshSprites();
     }
 
     public void OnButtonMusicPressed() {
-
+        GameData.musicEnabled = !GameData.musicEnabled;
+        GameData.SavePlayerPrefs();
+        RefreshSprites();
     }
 
     public void OnButton01Pressed() {

@@ -9,22 +9,27 @@ using System;
 [RequireComponent(typeof(PopupManager))]
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance;
+
     //Game Specific Variables
     [HideInInspector] public GameObjectPooler bulletsPool;
 
     //Private variables
     private GameObject _levelInstance;
     private GameObject _levelPrefab;
-    public static GameManager Instance;
 
     void Awake()
     {
-        Instance = this;
+        if (Instance == null) {
+            Instance = this;
+            DontDestroyOnLoad(this);
+        }
+        else {
+            Destroy(this);
+        }
 
         GameData.SetGameState(GameData.GameStates.Initializing);
-
         GameData.LoadPlayerPrefs();
-
         Application.targetFrameRate = 90;
     }
 
